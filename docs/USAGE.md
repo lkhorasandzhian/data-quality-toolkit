@@ -4,6 +4,8 @@ Run the toolkit in GitHub Actions or use the published Docker image. Neither opt
 
 ## GitHub Actions
 
+Use a published version tag (for example, `@v1.0.0`). The GitHub Action does not provide an `@latest` tag.
+
 Add this workflow to `.github/workflows/data-quality.yml` in the repository containing your CSV:
 
 ```yaml
@@ -17,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Validate CSV and write Parquet
-        uses: lkhorasandzhian/data-quality-toolkit@main
+        uses: lkhorasandzhian/data-quality-toolkit@v1.0.0
         with:
           input: data/events.csv
           output: data/events.parquet
@@ -25,14 +27,16 @@ jobs:
           unique: event_id
 ```
 
-Paths are relative to the checked-out repository. Failed validation fails the step; successful validation writes Parquet into the runner workspace. The JSON report appears in the step logs. This Docker action requires a Linux runner and builds its container from the toolkit's Dockerfile. For reproducible workflows, replace `@main` with a commit SHA.
+Paths are relative to the checked-out repository. Failed validation fails the step; successful validation writes Parquet into the runner workspace. The JSON report appears in the step logs. This Docker action requires a Linux runner and builds its container from the toolkit's Dockerfile.
 
 ## Docker image
+
+Use a published version tag such as `:v1.0.0`, or `:latest` for the most recently published release. Prefer a specific version in CI.
 
 Run the Docker image from the directory containing your `data` folder:
 
 ```bash
-docker run --rm -v "$PWD/data:/data" ghcr.io/lkhorasandzhian/data-quality-toolkit:main \
+docker run --rm -v "$PWD/data:/data" ghcr.io/lkhorasandzhian/data-quality-toolkit:v1.0.0 \
   --input /data/events.csv \
   --output /data/events.parquet \
   --required event_id,event_time,user_id \
@@ -43,7 +47,7 @@ docker run --rm -v "$PWD/data:/data" ghcr.io/lkhorasandzhian/data-quality-toolki
 PowerShell:
 
 ```powershell
-docker run --rm -v "${PWD}/data:/data" ghcr.io/lkhorasandzhian/data-quality-toolkit:main --input /data/events.csv --output /data/events.parquet --required event_id,event_time,user_id --unique event_id --report /data/quality.json
+docker run --rm -v "${PWD}/data:/data" ghcr.io/lkhorasandzhian/data-quality-toolkit:v1.0.0 --input /data/events.csv --output /data/events.parquet --required event_id,event_time,user_id --unique event_id --report /data/quality.json
 ```
 
 Docker downloads the image automatically if it is not available locally. The mounted folder receives `events.parquet` and `quality.json`. If the package is private, authenticate to GHCR first with a token that has package read permissions.
