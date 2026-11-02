@@ -18,8 +18,8 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: '3.12'
-      - run: python -m pip install -r toolkit/requirements.txt
-      - run: python -m unittest discover -s toolkit/tests -v
+      - run: python -m pip install -r toolkit/requirements-dev.txt
+      - run: python -m pytest toolkit/tests -v
 
   publish:
     needs: test
@@ -44,6 +44,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: .
+          target: runtime
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

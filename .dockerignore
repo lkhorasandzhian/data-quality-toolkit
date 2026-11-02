@@ -4,5 +4,4 @@ __pycache__
 *.parquet
 *.json
 toolkit/examples
-toolkit/tests
 .venv
