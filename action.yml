@@ -1,0 +1,32 @@
+name: Data Quality Toolkit
+description: Validate CSV data in CI pipelines
+
+inputs:
+  input:
+    description: Path to CSV file
+    required: true
+
+  output:
+    description: Path to output Parquet file
+    default: output.parquet
+
+  required:
+    description: Required columns
+    default: ""
+
+  unique:
+    description: Unique key columns
+    default: ""
+
+runs:
+  using: docker
+  image: Dockerfile
+  args:
+    - --input
+    - /github/workspace/${{ inputs.input }}
+    - --output
+    - /github/workspace/${{ inputs.output }}
+    - --required
+    - ${{ inputs.required }}
+    - --unique
+    - ${{ inputs.unique }}

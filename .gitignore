@@ -218,3 +218,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Generated example outputs
+/toolkit/examples/events.parquet
+/toolkit/examples/quality.json
